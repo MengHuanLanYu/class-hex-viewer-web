@@ -11,10 +11,12 @@
 
 <script>
     import nodeItem from '../node';
-    import {prefixInt} from "../../util";
+    import {itemMixin} from "../item";
+
 
     export default {
         name: "index",
+        mixins: [itemMixin],
         components: {
             nodeItem
         },
@@ -24,18 +26,10 @@
                 default: undefined
             }
         },
-        data() {
-            return {
-                len: 0,
-                prefixZero: ''
-            }
-        },
         created() {
-            this.len = this.constantInfoList ? String(this.constantInfoList.length).length : 0;
-            this.prefixZero = Array(this.len).join('0');
+            this.calcPrefixStr(this.constantInfoList);
         },
         methods: {
-            prefixInt,
             nodeClick(key, item) {
                 // 这里作为保留的key，万一会用到也说不定
                 this.$emit('node-click', 'constantInfoList', item);

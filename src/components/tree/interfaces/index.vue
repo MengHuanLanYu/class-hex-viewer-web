@@ -2,8 +2,9 @@
     <div class="interfaces">
         <template v-if="interfaceList && interfaceList.length > 0">
             <div class="interface-item" v-for="(item,key) in interfaceList" :key="key">
-                <node-item :title="`${$t('interfaceInfo.title')} [${prefixInt(prefixZero,len,key)}]`" :text="item.description"
-                        @click.native="nodeClick(key,item)"
+                <node-item :title="`${$t('interfaceInfo.title')} [${prefixInt(prefixZero,len,key)}]`"
+                           :text="item.description"
+                           @click.native="nodeClick(key,item)"
                 />
             </div>
         </template>
@@ -12,10 +13,11 @@
 
 <script>
     import nodeItem from '../node';
-    import {prefixInt} from "../../util";
+    import {itemMixin} from "../item";
 
     export default {
         name: "index",
+        mixins: [itemMixin],
         components: {
             nodeItem
         },
@@ -25,18 +27,10 @@
                 default: undefined
             }
         },
-        data() {
-            return {
-                len: 0,
-                prefixZero: ''
-            }
-        },
         created() {
-            this.len = this.interfaceList ? String(this.interfaceList.length).length : 0;
-            this.prefixZero = Array(this.len).join('0');
+            this.calcPrefixStr(this.interfaceList);
         },
         methods: {
-            prefixInt,
             nodeClick(key, item) {
                 // 这里作为保留的key，万一会用到也说不定
                 this.$emit('node-click', 'interfaceList', item);

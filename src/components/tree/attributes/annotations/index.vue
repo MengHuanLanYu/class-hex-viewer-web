@@ -1,52 +1,53 @@
 <template>
-    <div class="methods">
-        <template v-if="methodList && methodList.length > 0">
-            <div class="field-item" v-for="(item,key) in methodList" :key="key">
+    <div class="annotations">
+        <template v-if="annotationList && annotationList.length > 0">
+            <div class="field-item" v-for="(item,key) in annotationList" :key="key">
                 <node-item
-                        :is-show-icon="item.attributes.attributesCount.value > 0"
-                        :title="`[${prefixInt(prefixZero,len,key)}]`" :text="item.description"
+                        :title="`[${prefixInt(prefixZero,len,key)}]`" text="Annotation"
                         @changeExpand="item.expand = !item.expand"
                         @click.native="nodeClick(key,item)"
                         @dblclick.native="nodeDbClick(item)"
                         :is-expand="item.expand"
+                        :is-show-icon="item.numElementValuePairs && item.numElementValuePairs.value > 0"
                 />
+
                 <el-collapse-transition>
                     <div class="node-content" v-show="item.expand">
-                        <attribute-list @node-click="attributeNodeClick"
-                                        :attribute-info-list="item.attributes.attributeInfoList"/>
+                        <template v-if="item.numElementValuePairs && item.numElementValuePairs.value > 0">
+                            <element-value-pair-item @node-click="attributeNodeClick" :element-value-pair-info-list="item.elementValuePairs"/>
+                        </template>
                     </div>
                 </el-collapse-transition>
             </div>
         </template>
     </div>
-
-
 </template>
 
 <script>
-    import nodeItem from '../node';
-    import {itemMixin} from "../item";
-    import attributeList from "../attributes";
+    import {itemMixin} from "../../item";
+    import nodeItem from '../../node';
+    import elementValuePairItem from "./elementValuePairItem";
 
     export default {
         name: "index",
         mixins: [itemMixin],
         components: {
-            nodeItem, attributeList
+            nodeItem,
+            elementValuePairItem
         },
         props: {
-            methodList: {
+            annotationList: {
                 type: Array,
                 default: undefined
             }
         },
         created() {
-            this.calcPrefixStr(this.methodList);
+            this.calcPrefixStr(this.annotationList);
         },
         methods: {
             nodeClick(key, item) {
                 // 这里作为保留的key，万一会用到也说不定
-                this.$emit('node-click', 'methodList', item);
+                this.$emit('node-click', 'annotations', item);
                 // console.log(key, item);
             }
         }
@@ -54,7 +55,7 @@
 </script>
 
 <style scoped>
-    .methods {
+    .annotations {
         padding-left: 20px;
     }
 </style>

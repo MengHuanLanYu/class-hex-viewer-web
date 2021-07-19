@@ -12,7 +12,8 @@
                 />
                 <el-collapse-transition>
                     <div class="node-content" v-show="item.expand">
-                        {{item.expand}}
+                        <attribute-list @node-click="attributeNodeClick"
+                                        :attribute-info-list="item.attributes.attributeInfoList"/>
                     </div>
                 </el-collapse-transition>
             </div>
@@ -20,17 +21,18 @@
     </div>
 
 
-
 </template>
 
 <script>
     import nodeItem from '../node';
-    import {prefixInt} from "../../util";
+    import attributeList from '../attributes'
+    import {itemMixin} from "../item";
 
     export default {
         name: "index",
+        mixins: [itemMixin],
         components: {
-            nodeItem
+            nodeItem, attributeList
         },
         props: {
             fieldList: {
@@ -38,25 +40,14 @@
                 default: undefined
             }
         },
-        data() {
-            return {
-                len: 0,
-                prefixZero: ''
-            }
-        },
         created() {
-            this.len = this.fieldList ? String(this.fieldList.length).length : 0;
-            this.prefixZero = Array(this.len).join('0');
+            this.calcPrefixStr(this.fieldList);
         },
         methods: {
-            prefixInt,
             nodeClick(key, item) {
                 // 这里作为保留的key，万一会用到也说不定
                 this.$emit('node-click', 'fieldList', item);
                 // console.log(key, item);
-            },
-            nodeDbClick(data) {
-                data.expand = !data.expand;
             }
         }
     }

@@ -7,29 +7,38 @@
                         @changeExpand="item.expand = !item.expand"
                         @click.native="nodeClick(key,item)"
                         @dblclick.native="nodeDbClick(item)"
+                        :is-show-icon="isExpand(item)"
                         :is-expand="item.expand"
                 />
                 <el-collapse-transition>
                     <div class="node-content" v-show="item.expand">
-                        {{item.expand}}
+                        <template v-if="item.numAnnotations && item.numAnnotations.value > 0">
+                            <annotation-item @node-click="attributeNodeClick" :annotation-list="item.annotations"/>
+                        </template>
+                        <template v-else-if="item.description === 'Code' && item.attributes && item.attributes.attributesCount.value > 0">
+                            <index :attribute-info-list="item.attributes.attributeInfoList" @node-click="attributeNodeClick" />
+                        </template>
                     </div>
                 </el-collapse-transition>
+
             </div>
         </template>
     </div>
-
 
 
 </template>
 
 <script>
     import nodeItem from '../node';
-    import {prefixInt} from "../../util";
+    import {itemMixin} from "../item";
+    import annotationItem from './annotations';
 
     export default {
         name: "index",
+        mixins: [itemMixin],
         components: {
-            nodeItem
+            nodeItem,
+            annotationItem
         },
         props: {
             attributeInfoList: {
@@ -37,25 +46,24 @@
                 default: undefined
             }
         },
-        data() {
-            return {
-                len: 0,
-                prefixZero: ''
-            }
-        },
         created() {
-            this.len = this.attributeInfoList ? String(this.attributeInfoList.length).length : 0;
-            this.prefixZero = Array(this.len).join('0');
+            this.calcPrefixStr(this.attributeInfoList);
         },
         methods: {
-            prefixInt,
             nodeClick(key, item) {
                 // 这里作为保留的key，万一会用到也说不定
                 this.$emit('node-click', 'attributeInfoList', item);
                 // console.log(key, item);
             },
-            nodeDbClick(data) {
-                data.expand = !data.expand;
+            /**
+             * 是否可以展开
+             * @param item
+             */
+            isExpand(item) {
+                // 运行时注解
+                return item.numAnnotations && item.numAnnotations.value > 0
+                    // 字节码指令
+                    || (item.description === 'Code' && item.attributes && item.attributes.attributesCount.value > 0);
             }
         }
     }
