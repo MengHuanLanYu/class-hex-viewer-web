@@ -1,40 +1,41 @@
 <template>
     <div id="app">
-        <button @click="changeLang('en-us')">英文</button>
-        <button @click="changeLang('zh-cn')">中文</button>
-        <el-divider/>
-        <tree :info="dataInfo"/>
+        <router-view/>
     </div>
 </template>
 
 <script>
-    import jsonStr from './json';
-    import tree from './components/tree';
-    import {format} from "./components/util/json";
-
     export default {
         name: 'App',
-        components: {
-            tree
-        },
         data() {
-            return {
-                dataInfo: {},
-                testName: 'test'
-            }
+            return {}
         },
         created() {
-            let temp = JSON.parse(JSON.stringify(jsonStr));
-
-            this.dataInfo = Object.assign({}, format(temp));
-            console.log(this.dataInfo);
+            this.listenKeyDown();
         },
         methods: {
-            changeLang(type) {
-                this.$i18n.locale = type;
+            listenKeyDown() {
+                // 监听键盘按下事件
+                window.addEventListener('keydown', event => {
+                    if (event.key === '1') {
+                        let isCtrlKey = navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey;
+                        if (isCtrlKey && event.altKey) {
+                            // 打开对话框
+                            this.$eventBus.$emit('openFile');
+                            //取消默认行为
+                            event.preventDefault();
+                            return;
+                        }
+                    }
+                    if (process.env.NODE_ENV === 'production') {
+                        //取消默认行为
+                        event.preventDefault();
+                    }
+                });
             }
         }
     }
+
 </script>
 
 <style>
@@ -48,5 +49,6 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         color: #333333;
+        background-color: #fefefe;
     }
 </style>

@@ -1,4 +1,4 @@
-import {prefixInt} from "../util";
+import {prefixInt} from "../../util";
 
 export const itemMixin = {
     data() {

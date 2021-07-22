@@ -1,7 +1,13 @@
 <template>
     <div class="node no-node">
         <div class="icon">
-            <i :class="isExpand ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" @click="$emit('changeExpand')" v-show="isShowIcon"></i>
+            <template v-if="isShowIcon">
+                <i :class="isExpand ? 'el-icon-folder-opened' : 'el-icon-folder'" @click="$emit('changeExpand')"></i>
+            </template>
+            <template v-else>
+                <i class="el-icon-document"></i>
+            </template>
+
         </div>
         <div class="content">
             <div class="title">{{title}}</div>

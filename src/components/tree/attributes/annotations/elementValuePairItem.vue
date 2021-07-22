@@ -12,8 +12,14 @@
                 />
                 <el-collapse-transition>
                     <div class="node-content" v-show="item.expand">
-                        <attribute-item @node-click="attributeNodeClick" :attribute-list="item.value.value.values"
-                                        display-text="ConstElement"/>
+                        <template v-if="item.value.value.values">
+                            <attribute-item @node-click="attributeNodeClick" :attribute-list="item.value.value.values"
+                                            display-text="ConstElement"/>
+                        </template>
+                        <template v-else>
+                            <attribute-item @node-click="attributeNodeClick" :attribute-list="[item.value]"
+                                            display-text="ConstElement"/>
+                        </template>
                     </div>
                 </el-collapse-transition>
             </div>

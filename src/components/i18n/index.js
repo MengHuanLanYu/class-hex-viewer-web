@@ -6,10 +6,10 @@ import zhCN from './zh-cn';
 Vue.use(VueI18n);
 
 const i18n = new VueI18n({
-    locale: 'zh-cn',  // 语言标识
+    locale: 'zhCN',  // 语言标识
     messages: {
-        'zh-cn': zhCN,
-        'en-us': enUS
+        'zhCN': zhCN,
+        'enUS': enUS
     },
     silentTranslationWarn: true // 去除console中黄色报错
 });
