@@ -1,12 +1,12 @@
 <template>
     <div class="class-hex-viewer" id="class-hex-viewer" ref="classHexViewerRef">
-        <template v-if="treeNodeInfo">
+        <template v-if="!contentIsEmpty">
             <div class="viewer-main">
-                <div class="viewer-item viewer-tree-menu">
+                <div class="viewer-item viewer-tree-menu right-border">
                     <tree :info="treeNodeInfo"/>
                 </div>
-                <div class="viewer-item viewer-hex">
-                    第二块
+                <div class="viewer-item viewer-hex right-border" id="viewer-hex-id">
+                    <hex-panel :byte-array="contentInfo.byteArray" :hex-array="contentInfo.hexArray"/>
                 </div>
                 <div class="viewer-item viewer-tools">
                     第三块
@@ -30,18 +30,23 @@
 <script>
     import {uploadFile} from '../api';
     import tree from '../components/tree';
+    import hexPanel from '../components/hexpanel';
     import {format} from "../util/json";
     import {readFileByte} from "../util";
 
     export default {
         name: "index",
         components: {
-            tree
+            tree, hexPanel
         },
         data() {
             return {
+                contentIsEmpty: true,
                 treeNodeInfo: undefined,
-                contentInfo: undefined,
+                contentInfo: {
+                    byteArray: [],
+                    hexArray: []
+                },
                 isLoading: false
             }
         },
@@ -102,13 +107,22 @@
                 let formData = new FormData();
                 formData.set('file', file);
                 this.isLoading = true;
-                readFileByte(file).then(data => {
-                    this.contentInfo = Object.assign({}, data);
-                    console.log( this.contentInfo);
-                });
                 uploadFile(formData).then(data => {
-                    this.isLoading = false;
-                    this.treeNodeInfo = Object.assign({}, format(data.data));
+                    if (data.data) {
+                        this.treeNodeInfo = Object.assign({}, format(data.data));
+                        readFileByte(file).then(data => {
+                            this.isLoading = false;
+                            this.contentIsEmpty = false;
+                            this.contentInfo = Object.assign({}, data);
+                            console.log(this.contentInfo);
+                        });
+                    } else {
+                        this.treeNodeInfo = undefined;
+                        this.contentInfo = {
+                            byteArray: [],
+                            hexArray: []
+                        };
+                    }
                 });
 
             }
@@ -133,11 +147,9 @@
 
     .viewer-tree-menu {
         padding: 0 20px 10px 0;
-        border-right: solid 1px #F2F6FC;
     }
 
     .viewer-hex {
-        background-color: chartreuse;
         flex: 4;
     }
 

@@ -36,6 +36,9 @@
                 </template>
             </div>
         </template>
+        <template v-else>
+            <el-empty :description="$t('optionInfo.content.fileEmpty')"></el-empty>
+        </template>
     </div>
 </template>
 
@@ -59,15 +62,14 @@
         },
         props: {
             info: {
-                type: Object
-            },
-            padding: {
-                type: Number
+                type: Object,
+                default: null
             }
         },
         methods: {
             nodeClick(name, data) {
                 console.log('click ===> %s', name, data);
+                this.$eventBus.$emit('clickTreeNode',{name,data});
             },
             nodeDbClick(data) {
                 data.expand = !data.expand;

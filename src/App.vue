@@ -51,4 +51,12 @@
         color: #333333;
         background-color: #fefefe;
     }
+
+    .right-border{
+        border-right: solid 1px #E4E7ED;
+    }
+
+    .bottom-border{
+        border-bottom: solid 1px #E4E7ED;
+    }
 </style>

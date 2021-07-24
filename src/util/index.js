@@ -21,9 +21,14 @@ export function readFileByte(file) {
             let hexArrayBuffer = evt.target.result;
             let uint8Array = new Uint8Array(hexArrayBuffer);
             let hexArray = [], byteArray = [];
-            uint8Array.forEach(item => {
-                hexArray.push(item.toString(16).padStart(2, '0').toUpperCase());
-                byteArray.push(String.fromCharCode(item));
+            uint8Array.forEach((item,index) => {
+                let page = Math.floor(index / 16);
+                if (!hexArray[page]){
+                    hexArray[page] = [];
+                    byteArray[page] = [];
+                }
+                hexArray[page].push(item.toString(16).padStart(2, '0').toUpperCase());
+                byteArray[page].push(String.fromCharCode(item));
             });
             resolve({hexArray, byteArray});
         };
