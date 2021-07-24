@@ -8,8 +8,14 @@
                             <div class="hex-offset right-border">
                                 offset
                             </div>
-                            <div :key="item" v-for="item in 16" class="hex-number hex-panel-col">
-                                {{String(item - 1).padStart(2,'0')}}
+                            <div :key="item" v-for="item in 16" class="hex-number hex-panel-col"
+                                 @click="isShowHex = !isShowHex">
+                                <span v-show="isShowHex">
+                                    {{Number(item - 1).toString(16).padStart(2,' ').toUpperCase()}}
+                                </span>
+                                <span v-show="!isShowHex">
+                                    {{String(item - 1).padStart(2,' ')}}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -23,18 +29,25 @@
             <div class="hex-panel-content">
                 <div class="hex-content right-border">
                     <div :key="key" v-for="(item,key) in hexArray" class="hex-panel-row hex-row">
-                        <div class="hex-offset right-border">
-                            {{String(key * 16).padStart(8,'0')}}
+                        <div class="hex-offset right-border" @click="isShowHex = !isShowHex">
+                            <span v-show="isShowHex">
+                                {{Number(key * 16).toString(16).padStart(8,'0').toUpperCase()}}
+                            </span>
+                            <span v-show="!isShowHex">
+                                {{String(key * 16).padStart(8,'0')}}
+                            </span>
                         </div>
-                        <div v-for="(temp,index) in item" :key="index" class="hex-col hex-panel-col">
-                            {{temp}}
+                        <div v-for="(temp,index) in item" :key="index" class="hex-col hex-panel-col"
+                             :class="{'select-col':temp.isChecked}">
+                            {{temp.value}}
                         </div>
                     </div>
                 </div>
                 <div class="byte-content">
                     <div :key="key" v-for="(item,key) in byteArray" class="hex-panel-row byte-row">
-                        <div v-for="(temp,index) in item" :key="index" class="byte-col hex-panel-col">
-                            {{temp}}
+                        <div v-for="(temp,index) in item" :key="index" class="byte-col hex-panel-col"
+                             :class="{'select-col':temp.isChecked}">
+                            {{temp.value}}
                         </div>
                     </div>
                 </div>
@@ -48,6 +61,8 @@
 </template>
 
 <script>
+    import elementResizeDetector from 'element-resize-detector';
+
     export default {
         name: "index",
         props: {
@@ -60,30 +75,82 @@
                 default: undefined
             }
         },
-        data(){
-            return{
-                topWidth: 0
+        data() {
+            return {
+                topWidth: 0,
+                /*元素大小发生变化*/
+                elementResize: elementResizeDetector(),
+                /*父级元素*/
+                viewerHexIdElement: undefined,
+                /*是否以16进制显示*/
+                isShowHex: false,
+                beforeOffset: 0,
+                beforeSize: 0,
             }
         },
         created() {
             this.$eventBus.$on('clickTreeNode', this.changeNode);
+        },
+        mounted() {
+            // 赋值
+            this.viewerHexIdElement = document.getElementById('viewer-hex-id');
+            this.getDivWidth();
+            // 监听div变化
+            this.elementResize.listenTo(document.getElementById('viewer-tree-menu-id'), () => {
+                this.getDivWidth();
+            });
+            // 监听窗口变化
             window.onresize = () => {
                 this.getDivWidth();
             }
         },
-        mounted() {
-            this.getDivWidth();
-        },
         methods: {
             changeNode({data}) {
-                console.log(data._offset, data._size);
-                // for (let elementsByClassNameKey in document.getElementsByClassName('hex-col')) {
-                //     console.log(elementsByClassNameKey);
-                // }
+                // 取消选中
+                this.changeNumberStatus(this.beforeOffset, this.beforeSize, false);
+                // 添加选中
+                this.changeNumberStatus(data._offset, data._size, true);
+                // 记录当前下标
+                this.beforeOffset = data._offset;
+                this.beforeSize = data._size;
+
+                // 计算滚动当前块
+                let row = Math.floor(data._offset / 16), col = data._offset % 16;
+                let beforeIndex = (row * 16) + col;
+                let currentOffsetTop = document.querySelectorAll('.hex-col')[beforeIndex].offsetTop,
+                    contentOffsetTop = this.viewerHexIdElement.offsetTop;
+                this.viewerHexIdElement.scrollTop = Math.max(0, currentOffsetTop - contentOffsetTop - 22);
             },
             getDivWidth() {
-                let hexPanel = document.getElementById('viewer-hex-id');
-                this.topWidth = hexPanel.scrollWidth;
+                this.topWidth = this.viewerHexIdElement.scrollWidth;
+            },
+            changeNumberStatus(offset, size, status) {
+                // 看看在第几行
+                let row = Math.floor(offset / 16), col = offset % 16;
+                console.log('偏移量[%d],偏移长度[%s] ===> [%d,%d],%s', offset, size, row, col, status);
+                for (let i = 0; i < size; i++) {
+                    this.hexArray[row][col].isChecked = status;
+                    this.byteArray[row][col].isChecked = status;
+                    if (++col > 15) {
+                        col = 0;
+                        row++;
+                    }
+                }
+
+                // let selectElement = document.querySelectorAll('.select-col');
+                // if (selectElement && selectElement.length) {
+                //     selectElement.forEach(item => {
+                //         item.classList.remove('select-col');
+                //     });
+                // }
+                // let hexCol = document.querySelectorAll('.hex-col');
+                // for (let i = 0; i < data._size; i++) {
+                //     hexCol[data._offset + i].classList.add('select-col');
+                // }
+                // let byteCol = document.querySelectorAll('.byte-col');
+                // for (let i = 0; i < data._size; i++) {
+                //     byteCol[data._offset + i].classList.add('select-col');
+                // }
             }
         }
     }
@@ -117,12 +184,16 @@
     }
 
     .hex-offset {
-        padding: 2px;
+        /*padding: 2px;*/
+        height: 21px;
+        line-height: 21px;
         color: dodgerblue;
     }
 
     .hex-panel-col {
-        padding: 2px;
+        /*padding: 2px;*/
+        height: 21px;
+        line-height: 21px;
         cursor: pointer;
     }
 

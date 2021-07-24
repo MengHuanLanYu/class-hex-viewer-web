@@ -2,7 +2,7 @@
     <div class="class-hex-viewer" id="class-hex-viewer" ref="classHexViewerRef">
         <template v-if="!contentIsEmpty">
             <div class="viewer-main">
-                <div class="viewer-item viewer-tree-menu right-border">
+                <div class="viewer-item viewer-tree-menu right-border" id="viewer-tree-menu-id">
                     <tree :info="treeNodeInfo"/>
                 </div>
                 <div class="viewer-item viewer-hex right-border" id="viewer-hex-id">
@@ -142,6 +142,7 @@
 
     .viewer-item {
         overflow-y: auto;
+        overflow-x: hidden;
         height: calc(100vh - 71px - 40px);
     }
 
