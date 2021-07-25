@@ -9,7 +9,7 @@
                     <hex-panel :byte-array="contentInfo.byteArray" :hex-array="contentInfo.hexArray"/>
                 </div>
                 <div class="viewer-item viewer-tools">
-                    第三块
+                    <detail-panel/>
                 </div>
             </div>
         </template>
@@ -31,13 +31,14 @@
     import {uploadFile} from '../api';
     import tree from '../components/tree';
     import hexPanel from '../components/hexpanel';
+    import detailPanel from '../components/detailpanel';
     import {format} from "../util/json";
     import {readFileByte} from "../util";
 
     export default {
         name: "index",
         components: {
-            tree, hexPanel
+            tree, hexPanel, detailPanel
         },
         data() {
             return {
@@ -154,7 +155,6 @@
     }
 
     .viewer-tools {
-        background-color: darkorange;
         flex: 2;
     }
 </style>

@@ -4,7 +4,14 @@ module.exports = {
             openClassFile: '打开类文件'
         },
         content: {
-            fileEmpty: '暂无内容'
+            fileEmpty: '暂无内容',
+            detailInfo: {
+                title: '当前信息',
+                offsetAddress: '偏移地址',
+                offsetValue: '值',
+                block: '选区',
+                size: '大小'
+            }
         },
         message: {
             tip: {

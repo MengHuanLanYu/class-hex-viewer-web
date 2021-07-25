@@ -32,16 +32,16 @@
 
 
     ::-webkit-scrollbar {
-        width: 5px;
+        width: 2px;
     }
 
     ::-webkit-scrollbar-button {
-        width: 5px;
+        width: 2px;
     }
 
     ::-webkit-scrollbar-thumb {
-        -webkit-box-shadow: inset 0 0 5px rgba(144, 147, 153, .3);
+        -webkit-box-shadow: inset 0 0 1px rgba(144, 147, 153, .3);
         background-color: rgba(144,147,153,.3);
-        border-radius: 4px;
+        border-radius: 2px;
     }
 </style>

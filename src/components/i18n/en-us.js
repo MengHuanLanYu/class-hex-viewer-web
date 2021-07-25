@@ -5,10 +5,17 @@ module.exports = {
         },
         content: {
             fileEmpty: 'no content',
+            detailInfo: {
+                title: 'current info',
+                offsetAddress: 'Offset',
+                offsetValue: 'Value',
+                block: 'Block',
+                size: 'Size'
+            }
         },
         message: {
             tip: {
-              fileEmptyTip: 'please drag and drop a file or manually select a file'
+                fileEmptyTip: 'please drag and drop a file or manually select a file'
             },
             error: {
                 fileTypeError: 'file type is incorrect, Please select a class file',
