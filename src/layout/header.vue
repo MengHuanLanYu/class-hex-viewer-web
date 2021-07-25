@@ -7,8 +7,13 @@
         </div>
         <div class="header-menu">
             <div class="header-menu-item">
-                <el-button type="text" @click="$eventBus.$emit('openFile')">
+                <el-button icon="el-icon-folder-opened" type="text" @click="$eventBus.$emit('openFile')">
                     {{$t('optionInfo.header.openClassFile')}} (ctrl + alt + 1)
+                </el-button>
+            </div>
+            <div class="header-menu-item">
+                <el-button icon="el-icon-setting" type="text" @click="drawerVisible = true">
+                    {{$t('optionInfo.header.setting')}}
                 </el-button>
             </div>
             <div class="header-menu-item">
@@ -23,6 +28,27 @@
                 </el-dropdown>
             </div>
         </div>
+
+
+        <!-- 右侧设置抽屉 -->
+        <el-drawer title="设置" :show-close="false" :visible.sync="drawerVisible" size="230px" direction="rtl">
+            <div class="setting-content">
+                <div class="setting-item">
+                    <div class="item-title">
+                        是否显示辅助线
+                    </div>
+                    <div class="item-switch">
+                        <el-switch
+                                v-model="$store.state.isShowAuxiliaryLine"
+                                active-color="#13ce66"
+                                @change="changeAuxiliaryLine"
+                                inactive-color="#ff4949">
+                        </el-switch>
+                    </div>
+                </div>
+
+            </div>
+        </el-drawer>
     </div>
 </template>
 
@@ -35,13 +61,17 @@
                     zhCN: '中文',
                     enUS: 'English'
                 },
-                languageName: '中文'
+                languageName: '中文',
+                drawerVisible: false,
             }
         },
         methods: {
             changeLanguage(value) {
                 this.$i18n.locale = value;
                 this.languageName = this.languageInfo[value];
+            },
+            changeAuxiliaryLine(v) {
+                this.$store.dispatch('setIsShowAuxiliaryLine', v);
             }
         }
 
@@ -78,5 +108,11 @@
         cursor: pointer;
         display: inline-block;
         margin: 0 15px;
+    }
+
+    .setting-item {
+        display: flex;
+        justify-content: space-around;
+        justify-items: center;
     }
 </style>

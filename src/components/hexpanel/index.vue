@@ -27,8 +27,9 @@
 
 
             <div class="hex-panel-content">
-                <div class="hex-content right-border">
-                    <div :key="key" v-for="(item,key) in hexArray" class="hex-panel-row hex-row">
+                <div class="hex-content right-border"
+                     @mouseleave="contentMouseleave">
+                    <div :key="key" v-for="(item,key) in hexArray" class="hex-panel-row hex-row auxiliary-row">
                         <div class="hex-offset right-border" @click="isShowHex = !isShowHex">
                             <span v-show="isShowHex">
                                 {{Number(key * 16).toString(16).padStart(8,'0').toUpperCase()}}
@@ -38,13 +39,14 @@
                             </span>
                         </div>
                         <div v-for="(temp,index) in item" :key="index" class="hex-col hex-panel-col"
+                             @mouseenter="contentMouseenter(key,index)"
                              :class="{'select-col':temp.isChecked}" @click="hexColClick(temp.value,key,index)">
                             {{temp.value}}
                         </div>
                     </div>
                 </div>
                 <div class="byte-content">
-                    <div :key="key" v-for="(item,key) in byteArray" class="hex-panel-row byte-row">
+                    <div :key="key" v-for="(item,key) in byteArray" class="hex-panel-row byte-row auxiliary-row">
                         <div v-for="(temp,index) in item" :key="index" class="byte-col hex-panel-col"
                              :class="{'select-col':temp.isChecked}">
                             {{temp.value}}
@@ -86,6 +88,8 @@
                 isShowHex: false,
                 beforeOffset: 0,
                 beforeSize: 0,
+                oldRow: -1,
+                oldCol: -1
             }
         },
         created() {
@@ -134,6 +138,64 @@
             },
             getDivWidth() {
                 this.topWidth = this.viewerHexIdElement.scrollWidth;
+            },
+            contentMouseenter(row, col) {
+                if (this.$store.state.isShowAuxiliaryLine) {
+                    if (this.oldRow !== row) {
+                        // 改变行样式
+                        this.changeRowClass(row);
+                    }
+                    if (this.oldCol !== col) {
+                        // 改变列样式
+                        this.changeColClass(col);
+                    }
+                }
+            },
+            contentMouseleave() {
+                if (this.$store.state.isShowAuxiliaryLine) {
+                    let allAuxiliaryLine = document.querySelectorAll('.auxiliary-line,.auxiliary-line-col');
+                    if (allAuxiliaryLine) {
+                        allAuxiliaryLine.forEach(item => {
+                            item.classList.remove('auxiliary-line','auxiliary-line-col');
+                        })
+                    }
+                    this.oldRow = this.oldCol = -1;
+                }
+            },
+            changeRowClass(row) {
+                let oldElementList = document.querySelectorAll('.auxiliary-row.auxiliary-line');
+                if (oldElementList) {
+                    oldElementList.forEach(item => {
+                        let childList = item.querySelectorAll('.hex-panel-col.auxiliary-line');
+                        if (childList) {
+                            childList.forEach(temp => {
+                                temp.classList.remove('auxiliary-line');
+                            });
+                        }
+                        item.classList.remove('auxiliary-line');
+                    });
+                }
+                let newElementList = document.querySelectorAll(`.auxiliary-row:nth-child(${row + 1})`);
+                newElementList.forEach(item => {
+                    item.querySelectorAll('.hex-panel-col').forEach(temp => {
+                        temp.classList.add('auxiliary-line');
+                    });
+                    item.classList.add('auxiliary-line');
+                });
+                this.oldRow = row;
+            },
+            changeColClass(col) {
+                let oldElementList = document.querySelectorAll('.auxiliary-row > .hex-panel-col.auxiliary-line-col');
+                if (oldElementList) {
+                    oldElementList.forEach(item => {
+                        item.classList.remove('auxiliary-line-col');
+                    })
+                }
+                let newElementList = document.querySelectorAll(`.auxiliary-row > .hex-panel-col.hex-col:nth-child(${col + 2}),.auxiliary-row > .hex-panel-col.byte-col:nth-child(${col + 1})`);
+                newElementList.forEach(item => {
+                    item.classList.add('auxiliary-line-col');
+                });
+                this.oldCol = col;
             },
             changeNumberStatus(offset, size, status) {
                 // 看看在第几行
@@ -194,6 +256,7 @@
         grid-template-columns: repeat(16, 1fr);
     }
 
+
     .hex-offset {
         /*padding: 2px;*/
         height: 21px;
@@ -221,6 +284,20 @@
     .select-col {
         background-color: lightskyblue;
     }
+
+    .hex-col:hover {
+        color: white;
+        background-color: darkorange;
+    }
+
+    .auxiliary-line {
+        background-color: darkorange !important;
+    }
+
+    .auxiliary-line-col {
+        background-color: darkorange !important;
+    }
+
 
     div {
         -moz-user-select: none; /*火狐*/

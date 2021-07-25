@@ -1,7 +1,8 @@
 module.exports = {
     optionInfo: {
         header: {
-            openClassFile: 'open class file'
+            openClassFile: 'open class file',
+            setting: 'setting'
         },
         content: {
             fileEmpty: 'no content',

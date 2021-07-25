@@ -5,14 +5,16 @@
                 <span>{{$t('optionInfo.content.detailInfo.title')}}</span>
             </div>
             <div class="current-info-row">
-                <div class="current-info-col current-info-title">
-                    {{$t('optionInfo.content.detailInfo.offsetAddress')}}
+                <i class="el-icon-location-information"></i>
+                <div class="current-info-col current-info-title">{{$t('optionInfo.content.detailInfo.offsetAddress')}}
                 </div>
                 <div class="current-info-col current-info-value">
                     {{offset}}
                 </div>
-                <div class="current-info-col current-info-title">
-                    {{$t('optionInfo.content.detailInfo.offsetValue')}}
+            </div>
+            <div class="current-info-row">
+                <i class="el-icon-coin"></i>
+                <div class="current-info-col current-info-title">{{$t('optionInfo.content.detailInfo.offsetValue')}}
                 </div>
                 <div class="current-info-col current-info-value">
                     {{value}}
@@ -20,14 +22,18 @@
             </div>
 
             <div class="current-info-row">
+                <i class="el-icon-s-grid"></i>
                 <div class="current-info-col current-info-title">
                     {{$t('optionInfo.content.detailInfo.block')}}
                 </div>
                 <div class="current-info-col current-info-value">
                     {{begin === -1 ? '' : `${begin} - ${begin + size}`}}
                 </div>
-                <div class="current-info-col current-info-title">
-                    {{$t('optionInfo.content.detailInfo.size')}}
+            </div>
+
+            <div class="current-info-row">
+                <i class="el-icon-tickets"></i>
+                <div class="current-info-col current-info-title">{{$t('optionInfo.content.detailInfo.size')}}
                 </div>
                 <div class="current-info-col current-info-value">
                     {{begin === -1 ? '' : size}}
@@ -65,19 +71,19 @@
         line-height: 22px;
         font-size: 14px;
         margin-bottom: 5px;
+        display: flex;
     }
 
-    .current-info-row:last-child{
+    .current-info-row:last-child {
         margin-bottom: 0;
     }
 
     .current-info-col {
-        display: inline-block;
+        flex: 1;
     }
 
     .current-info-title {
         text-align: right;
-        width: 20%;
     }
 
     .current-info-title::after {
@@ -87,6 +93,6 @@
 
     .current-info-value {
         color: dodgerblue;
-        width: 30%;
+        flex: 2;
     }
 </style>
