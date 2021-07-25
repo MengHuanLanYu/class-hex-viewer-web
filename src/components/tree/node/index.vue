@@ -7,7 +7,6 @@
             <template v-else>
                 <i class="el-icon-document"></i>
             </template>
-
         </div>
         <div class="content">
             <div class="title">{{title}}</div>
@@ -36,7 +35,7 @@
                 type: String,
                 default: ''
             }
-        },
+        }
     }
 </script>
 

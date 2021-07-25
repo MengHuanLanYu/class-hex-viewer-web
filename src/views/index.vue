@@ -107,15 +107,14 @@
                 let formData = new FormData();
                 formData.set('file', file);
                 this.isLoading = true;
+                readFileByte(file).then(data => {
+                    this.contentInfo = Object.assign({}, data);
+                });
                 uploadFile(formData).then(data => {
                     if (data.data) {
                         this.treeNodeInfo = Object.assign({}, format(data.data));
-                        readFileByte(file).then(data => {
-                            this.isLoading = false;
-                            this.contentIsEmpty = false;
-                            this.contentInfo = Object.assign({}, data);
-                            console.log(this.contentInfo);
-                        });
+                        this.isLoading = false;
+                        this.contentIsEmpty = false;
                     } else {
                         this.treeNodeInfo = undefined;
                         this.contentInfo = {

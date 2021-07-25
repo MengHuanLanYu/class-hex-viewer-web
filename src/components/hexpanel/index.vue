@@ -38,7 +38,7 @@
                             </span>
                         </div>
                         <div v-for="(temp,index) in item" :key="index" class="hex-col hex-panel-col"
-                             :class="{'select-col':temp.isChecked}">
+                             :class="{'select-col':temp.isChecked}" @click="hexColClick(temp.value,key,index)">
                             {{temp.value}}
                         </div>
                     </div>
@@ -97,6 +97,8 @@
             this.getDivWidth();
             // 监听div变化
             this.elementResize.listenTo(document.getElementById('viewer-tree-menu-id'), () => {
+                // 变化
+                console.log('viewer-tree-menu change size')
                 this.getDivWidth();
             });
             // 监听窗口变化
@@ -105,7 +107,8 @@
             }
         },
         methods: {
-            changeNode({data}) {
+            changeNode(value) {
+                let data = value.data;
                 // 取消选中
                 this.changeNumberStatus(this.beforeOffset, this.beforeSize, false);
                 // 添加选中
@@ -120,6 +123,15 @@
                 let currentOffsetTop = document.querySelectorAll('.hex-col')[beforeIndex].offsetTop,
                     contentOffsetTop = this.viewerHexIdElement.offsetTop;
                 this.viewerHexIdElement.scrollTop = Math.max(0, currentOffsetTop - contentOffsetTop - 22);
+                // 点击事件
+                this.$eventBus.$emit('click-tree-node', Object.assign({}, value));
+            },
+            hexColClick(value, key, index) {
+                let currentValue = Number.parseInt(`0x${value}`).toString().padStart(3, '0'),
+                    currentOffset = key * 16 + index;
+                this.$message.success(`偏移地址[${currentOffset}],值[${currentValue}]`);
+                // 点击单元格事件
+                this.$eventBus.$emit('click-hex-col', {currentValue, currentOffset})
             },
             getDivWidth() {
                 this.topWidth = this.viewerHexIdElement.scrollWidth;
@@ -188,6 +200,7 @@
         height: 21px;
         line-height: 21px;
         color: dodgerblue;
+        cursor: pointer;
     }
 
     .hex-panel-col {
