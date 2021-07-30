@@ -114,6 +114,7 @@
                 uploadFile(formData).then(data => {
                     if (data.data) {
                         this.treeNodeInfo = Object.assign({}, format(data.data));
+                        this.$store.dispatch('setClassInfo', Object.assign({}, this.treeNodeInfo));
                         this.isLoading = false;
                         this.contentIsEmpty = false;
                     } else {

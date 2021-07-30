@@ -35,3 +35,14 @@ export function readFileByte(file) {
         readerHex.readAsArrayBuffer(file);
     });
 }
+
+/**
+ * 下划线转换驼峰
+ * @param name
+ * @returns {*}
+ */
+export function toHump(name) {
+    return name.replace(/_(\w)/g, (all, letter) => {
+        return letter.toUpperCase();
+    });
+}

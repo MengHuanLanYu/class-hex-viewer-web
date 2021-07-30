@@ -29,6 +29,37 @@ module.exports = {
     majorVersion: '主版本号',
     constantPoolCount: '常量池计数',
     constantPool: '常量池 (数量 - 1)',
+    constantPoolInfo: {
+        constantMethodrefInfo: {
+            classInfo: '类信息',
+            nameAndType: '名字和类型'
+        },
+        constantFieldrefInfo: {
+            classInfo: '类信息',
+            nameAndType: '名字和类型'
+        },
+        constantClassInfo: {
+            index: '类名'
+        },
+        constantNameAndTypeInfo: {
+            name: '名字',
+            describe: '描述符'
+        },
+        constantUtf8Info: {
+            bytes: '字节数组长度',
+            length: '字符串长度',
+            description: '字符串'
+        },
+        constantLongInfo: {
+            highBytes: '高位字节',
+            lowBytes: '低位字节',
+            description: '值'
+        },
+        constantStringInfo: {
+            description: '字符串'
+        },
+        empty: '描述'
+    },
     accessFlags: '访问标志',
     thisClass: '类索引',
     superClass: '父类索引',

@@ -200,7 +200,7 @@
             changeNumberStatus(offset, size, status) {
                 // 看看在第几行
                 let row = Math.floor(offset / 16), col = offset % 16;
-                console.log('偏移量[%d],偏移长度[%s] ===> [%d,%d],%s', offset, size, row, col, status);
+                // console.log('偏移量[%d],偏移长度[%s] ===> [%d,%d],%s', offset, size, row, col, status);
                 for (let i = 0; i < size; i++) {
                     this.hexArray[row][col].isChecked = status;
                     this.byteArray[row][col].isChecked = status;
