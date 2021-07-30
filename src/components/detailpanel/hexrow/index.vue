@@ -1,8 +1,10 @@
 <template>
     <div class="current-info-row">
-        <i :class="icon"></i>
-        <div class="current-info-col current-info-title">
-            {{title}}
+        <div style="display: flex;align-items: center;">
+            <i :class="icon"></i>
+            <div class="current-info-col current-info-title">
+                {{title}}
+            </div>
         </div>
         <div class="current-info-col current-info-value">
             {{value}}
@@ -32,12 +34,12 @@
 
 <style scoped>
     .current-info-row {
-        height: 22px;
+        /*height: 22px;*/
         line-height: 22px;
         font-size: 14px;
         margin-bottom: 5px;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
     }
 
     .current-info-row:last-child {
@@ -59,5 +61,6 @@
 
     .current-info-value {
         color: dodgerblue;
+        word-break: break-all;
     }
 </style>

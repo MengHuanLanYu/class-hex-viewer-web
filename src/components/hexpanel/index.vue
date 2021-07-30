@@ -1,7 +1,7 @@
 <template>
     <div class="hex-panel" id="hex-panel-id">
-        <template v-if="hexArray && byteArray && hexArray.length > 0 && byteArray.length > 0">
-            <div class="top-fixed" :style="{width: `${topWidth}px`}">
+        <template v-if="hexArray && byteArray && hexArray.length && byteArray.length">
+            <div class="top-fixed">
                 <div class="hex-panel-top bottom-border">
                     <div class="hex-content right-border">
                         <div class="hex-panel-row hex-row">
@@ -26,7 +26,7 @@
             </div>
 
 
-            <div class="hex-panel-content">
+            <div class="hex-panel-content" id="hex-panel-content-id">
                 <div class="hex-content right-border"
                      @mouseleave="contentMouseleave">
                     <div :key="key" v-for="(item,key) in hexArray" class="hex-panel-row hex-row auxiliary-row">
@@ -63,7 +63,6 @@
 </template>
 
 <script>
-    import elementResizeDetector from 'element-resize-detector';
 
     export default {
         name: "index",
@@ -80,10 +79,7 @@
         data() {
             return {
                 topWidth: 0,
-                /*元素大小发生变化*/
-                elementResize: elementResizeDetector(),
-                /*父级元素*/
-                viewerHexIdElement: undefined,
+                hexPanelContentIdElement: undefined,
                 /*是否以16进制显示*/
                 isShowHex: false,
                 beforeOffset: 0,
@@ -97,18 +93,7 @@
         },
         mounted() {
             // 赋值
-            this.viewerHexIdElement = document.getElementById('viewer-hex-id');
-            this.getDivWidth();
-            // 监听div变化
-            this.elementResize.listenTo(document.getElementById('viewer-hex-id'), () => {
-                // 变化
-                console.log('viewer-tree-menu change size')
-                this.getDivWidth();
-            });
-            // 监听窗口变化
-            window.onresize = () => {
-                this.getDivWidth();
-            }
+            this.hexPanelContentIdElement = document.getElementById('hex-panel-content-id');
         },
         methods: {
             changeNode(value) {
@@ -125,8 +110,8 @@
                 let row = Math.floor(data._offset / 16), col = data._offset % 16;
                 let beforeIndex = (row * 16) + col;
                 let currentOffsetTop = document.querySelectorAll('.hex-col')[beforeIndex].offsetTop,
-                    contentOffsetTop = this.viewerHexIdElement.offsetTop;
-                this.viewerHexIdElement.scrollTop = Math.max(0, currentOffsetTop - contentOffsetTop - 22);
+                    contentOffsetTop = this.hexPanelContentIdElement.offsetTop;
+                this.hexPanelContentIdElement.scrollTop = Math.max(0, currentOffsetTop - contentOffsetTop - 22);
                 // 点击事件
                 this.$eventBus.$emit('change-tree-node', Object.assign({}, value));
             },
@@ -135,9 +120,6 @@
                     currentOffset = key * 16 + index;
                 // 点击单元格事件
                 this.$eventBus.$emit('change-hex-col', {currentValue, currentOffset})
-            },
-            getDivWidth() {
-                this.topWidth = this.viewerHexIdElement.scrollWidth;
             },
             contentMouseenter(row, col) {
                 if (this.$store.state.isShowAuxiliaryLine) {
@@ -233,11 +215,14 @@
     .hex-panel {
         font-size: 15px;
         text-align: center;
+        overflow: hidden;
+        height: inherit;
         /*background-color: #E4E7ED;*/
     }
 
     .hex-content {
         flex: 3;
+        height: max-content;
     }
 
     .byte-content {
@@ -278,7 +263,12 @@
 
     .hex-panel-content {
         display: flex;
-        padding-top: 22px;
+        /*padding-top: 22px;*/
+        padding-bottom: 22px;
+        height: inherit;
+        overflow: auto;
+        /* flex: 1; */
+        box-sizing: border-box;
     }
 
     .select-col {
@@ -308,8 +298,8 @@
     }
 
     .top-fixed {
-        position: fixed;
-        z-index: 100;
+        /*position: fixed;*/
+        /*z-index: 100;*/
         background-color: white;
         color: dodgerblue;
     }

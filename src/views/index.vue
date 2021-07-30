@@ -152,6 +152,7 @@
     }
 
     .viewer-hex {
+        overflow: hidden;
         flex: 4;
     }
 
