@@ -1,8 +1,5 @@
 <template>
     <div class="constant-info">
-        <template v-if="info">
-
-        </template>
         <template v-if="type === 'empty'">
             <hex-row :title="$t(`constantPoolInfo.${type}`)" :value="info.description"/>
         </template>
@@ -25,7 +22,6 @@
             <hex-row :title="$t(`constantPoolInfo.${type}.bytes`)" :value="`${info.bytes.description}`"/>
             <hex-row :title="$t(`constantPoolInfo.${type}.description`)" :value="`${info.description}`"/>
         </template>
-
         <template v-else>
             <template v-for="(item,key) in info">
                 <hex-row :key="key" :title="$t(`constantPoolInfo.${type}.${key}`)"
