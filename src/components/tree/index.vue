@@ -69,7 +69,7 @@
         methods: {
             nodeClick(name, data) {
                 console.log('click ===> %s', name, data);
-                // this.$eventBus.$emit('clickTreeNode', {name, data});
+                this.$eventBus.$emit('clickTreeNode', {name, data});
             },
             nodeDbClick(data) {
                 data.expand = !data.expand;
