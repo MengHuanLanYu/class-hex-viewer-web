@@ -55,6 +55,14 @@ module.exports = {
             lowBytes: '低位字节',
             description: '值'
         },
+        constantInterfaceMethodrefInfo: {
+            classInfo: '类信息',
+            nameAndType: '名字和类型'
+        },
+        constantMethodHandleInfo: {
+            referenceKind: '引用类型',
+            referenceIndex: '引用序号'
+        },
         constantStringInfo: {
             description: '字符串'
         },

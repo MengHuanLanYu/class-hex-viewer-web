@@ -2,7 +2,7 @@
  * 忽略属性
  * @type {string[]}
  */
-export const IGNORE_ATTRIBUTES = ['_offset', '_size', 'tag', 'expand'];
+export const IGNORE_ATTRIBUTES = ['_offset', '_size', 'tag', 'expand','titleIndex'];
 
 export function format(data) {
     return formatJSON({}, data);
@@ -50,7 +50,7 @@ export function getConstantPool(data) {
         item.value = fillValue(item, listInfoList);
         item.isReplace = true;
     });
-    console.log(JSON.stringify(listInfoList));
+    // console.log(JSON.stringify(listInfoList));
     return listInfoList;
 }
 
@@ -61,7 +61,7 @@ export function getConstantPool(data) {
  * @returns {string|*}
  */
 function fillValue(obj, listInfoList) {
-    console.log(obj);
+    // console.log(obj);
     if (obj.isReplace) {
         return obj.value;
     }
