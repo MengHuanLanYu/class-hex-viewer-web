@@ -24,10 +24,14 @@ export function readFileByte(file) {
             uint8Array.forEach((item, index) => {
                 let page = Math.floor(index / 16);
                 if (!hexArray[page]) {
-                    hexArray[page] = [];
+                    hexArray[page] = {
+                        numberStr: String(index).padStart(8,'0'),
+                        hexStr: Number(index).toString(16).padStart(8,'0').toUpperCase(),
+                        list: []
+                    };
                     byteArray[page] = [];
                 }
-                hexArray[page].push({isChecked: false, value: item.toString(16).padStart(2, '0').toUpperCase()});
+                hexArray[page].list.push({isChecked: false, value: item.toString(16).padStart(2, '0').toUpperCase()});
                 byteArray[page].push({isChecked: false, value: String.fromCharCode(item)});
             });
             resolve({hexArray, byteArray});

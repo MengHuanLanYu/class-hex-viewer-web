@@ -11,7 +11,6 @@
                                @click.native="nodeClick(key,item)"
                                @changeExpand="item.expand = !item.expand"
                     />
-                    <!--                    <el-collapse-transition>-->
                     <div class="node-content" v-show="item.expand" :ref="`${key}NodeContent`">
                         <template v-if="key === 'constantPool'">
                             <constant-pool @node-click="nodeClick" :constant-info-list="item.constantInfoList"/>
@@ -32,7 +31,6 @@
                             无
                         </template>
                     </div>
-                    <!--                    </el-collapse-transition>-->
                 </template>
             </div>
         </template>
@@ -80,7 +78,7 @@
 
 <style scoped>
     .node-content {
-        height: 600px;
+        max-height: 600px;
         overflow: auto;
     }
 </style>

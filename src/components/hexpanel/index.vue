@@ -26,27 +26,26 @@
             </div>
 
 
-            <div class="hex-panel-content" id="hex-panel-content-id">
-                <div class="hex-content right-border"
-                     @mouseleave="contentMouseleave">
-                    <div :key="key" v-for="(item,key) in hexArray" class="hex-panel-row hex-row auxiliary-row">
+            <div class="hex-panel-content" id="hex-panel-content-id" ref="hexPanelContentRef">
+                <div class="hex-content right-border" :style="style" @mouseleave="contentMouseleave">
+                    <div :key="key" v-for="(item,key) in scrollHexArray" class="hex-panel-row hex-row auxiliary-row">
                         <div class="hex-offset right-border" @click="isShowHex = !isShowHex">
                             <span v-show="isShowHex">
-                                {{Number(key * 16).toString(16).padStart(8,'0').toUpperCase()}}
+                                {{item.hexStr}}
                             </span>
                             <span v-show="!isShowHex">
-                                {{String(key * 16).padStart(8,'0')}}
+                                {{item.numberStr}}
                             </span>
                         </div>
-                        <div v-for="(temp,index) in item" :key="index" class="hex-col hex-panel-col"
+                        <div v-for="(temp,index) in item.list" :key="index" class="hex-col hex-panel-col"
                              @mouseenter="contentMouseenter(key,index)"
                              :class="{'select-col':temp.isChecked}" @click="hexColClick(temp.value,key,index)">
                             {{temp.value}}
                         </div>
                     </div>
                 </div>
-                <div class="byte-content">
-                    <div :key="key" v-for="(item,key) in byteArray" class="hex-panel-row byte-row auxiliary-row">
+                <div class="byte-content" :style="style">
+                    <div :key="key" v-for="(item,key) in scrollByteArray" class="hex-panel-row byte-row auxiliary-row">
                         <div v-for="(temp,index) in item" :key="index" class="byte-col hex-panel-col"
                              :class="{'select-col':temp.isChecked}">
                             {{temp.value}}
@@ -78,22 +77,56 @@
         },
         data() {
             return {
-                topWidth: 0,
                 hexPanelContentIdElement: undefined,
                 /*是否以16进制显示*/
                 isShowHex: false,
                 beforeOffset: 0,
                 beforeSize: 0,
                 oldRow: -1,
-                oldCol: -1
+                oldCol: -1,
+                /*虚拟dom*/
+                startIndex: 0,
+                endIndex: 60,
+                paddingTop: 0,
+                paddingBottom: 22,
+                allHeight: 0,
+            }
+        },
+        computed: {
+            scrollHexArray() {
+                return this.hexArray.slice(this.startIndex, this.endIndex);
+            },
+            scrollByteArray() {
+                return this.byteArray.slice(this.startIndex, this.endIndex);
+            },
+            style() {
+                return {
+                    paddingTop: `${this.paddingTop}px`,
+                    paddingBottom: `${this.paddingBottom}px`
+                };
             }
         },
         created() {
+            let valLen = this.hexArray.length;
+            this.allHeight = valLen * 30;
+            this.paddingBottom = this.allHeight - this.scrollHexArray.length * 30;
             this.$eventBus.$on('clickTreeNode', this.changeNode);
         },
         mounted() {
             // 赋值
             this.hexPanelContentIdElement = document.getElementById('hex-panel-content-id');
+            this.hexPanelContentIdElement.addEventListener('scroll', () => {
+                let top = this.hexPanelContentIdElement.scrollTop;
+                this.startIndex = Math.floor(top / 30);
+                this.endIndex = this.startIndex + 60;
+
+                this.paddingTop = top;
+                if (this.endIndex >= this.hexArray.length - 1) {
+                    this.paddingBottom = 0;
+                    return
+                }
+                this.paddingBottom = this.allHeight - top;
+            })
         },
         methods: {
             changeNode(value) {
@@ -107,11 +140,8 @@
                 this.beforeSize = data._size;
 
                 // 计算滚动当前块
-                let row = Math.floor(data._offset / 16), col = data._offset % 16;
-                let beforeIndex = (row * 16) + col;
-                let currentOffsetTop = document.querySelectorAll('.hex-col')[beforeIndex].offsetTop,
-                    contentOffsetTop = this.hexPanelContentIdElement.offsetTop;
-                this.hexPanelContentIdElement.scrollTop = Math.max(0, currentOffsetTop - contentOffsetTop - 22);
+                let row = Math.floor(data._offset / 16);
+                this.hexPanelContentIdElement.scrollTop = Math.max(0, row * 30);
                 // 点击事件
                 this.$eventBus.$emit('change-tree-node', Object.assign({}, value));
             },
@@ -138,7 +168,7 @@
                     let allAuxiliaryLine = document.querySelectorAll('.auxiliary-line,.auxiliary-line-col');
                     if (allAuxiliaryLine) {
                         allAuxiliaryLine.forEach(item => {
-                            item.classList.remove('auxiliary-line','auxiliary-line-col');
+                            item.classList.remove('auxiliary-line', 'auxiliary-line-col');
                         })
                     }
                     this.oldRow = this.oldCol = -1;
@@ -184,7 +214,7 @@
                 let row = Math.floor(offset / 16), col = offset % 16;
                 // console.log('偏移量[%d],偏移长度[%s] ===> [%d,%d],%s', offset, size, row, col, status);
                 for (let i = 0; i < size; i++) {
-                    this.hexArray[row][col].isChecked = status;
+                    this.hexArray[row].list[col].isChecked = status;
                     this.byteArray[row][col].isChecked = status;
                     if (++col > 15) {
                         col = 0;
