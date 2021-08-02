@@ -15,12 +15,17 @@
         <template v-else-if="type === 'constantStringInfo'">
             <hex-row :title="$t(`constantPoolInfo.constantStringInfo.description`)" :value="`${info.description} ( ${constantPool[info.index.value - 1].value} )`"/>
         </template>
-        <template v-else-if="type === 'constantLongInfo'">
-            <hex-row :title="$t(`constantPoolInfo.constantLongInfo.highBytes`)"
+        <template v-else-if="type === 'constantLongInfo' || type === 'constantDoubleInfo'">
+            <hex-row :title="$t(`constantPoolInfo.${type}.highBytes`)"
                      :value="`${info.highBytes.description}`"/>
-            <hex-row :title="$t(`constantPoolInfo.constantLongInfo.lowBytes`)" :value="`${info.lowBytes.description}`"/>
-            <hex-row :title="$t(`constantPoolInfo.constantLongInfo.description`)" :value="`${info.description}`"/>
+            <hex-row :title="$t(`constantPoolInfo.${type}.lowBytes`)" :value="`${info.lowBytes.description}`"/>
+            <hex-row :title="$t(`constantPoolInfo.${type}.description`)" :value="`${info.description}`"/>
         </template>
+        <template v-else-if="type === 'constantIntegerInfo' || type === 'constantFloatInfo'">
+            <hex-row :title="$t(`constantPoolInfo.${type}.bytes`)" :value="`${info.bytes.description}`"/>
+            <hex-row :title="$t(`constantPoolInfo.${type}.description`)" :value="`${info.description}`"/>
+        </template>
+
         <template v-else>
             <template v-for="(item,key) in info">
                 <hex-row :key="key" :title="$t(`constantPoolInfo.${type}.${key}`)"

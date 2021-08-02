@@ -30,41 +30,71 @@ module.exports = {
     constantPoolCount: '常量池计数',
     constantPool: '常量池 (数量 - 1)',
     constantPoolInfo: {
-        constantMethodrefInfo: {
-            classInfo: '类信息',
-            nameAndType: '名字和类型'
-        },
-        constantFieldrefInfo: {
-            classInfo: '类信息',
-            nameAndType: '名字和类型'
-        },
-        constantClassInfo: {
-            index: '类名'
-        },
-        constantNameAndTypeInfo: {
-            name: '名字',
-            describe: '描述符'
-        },
         constantUtf8Info: {
             bytes: '字节数组长度',
             length: '字符串长度',
             description: '字符串'
+        },
+        constantIntegerInfo: {
+            bytes: '字节',
+            description: '值'
+        },
+        constantFloatInfo: {
+            bytes: '字节',
+            description: '值'
         },
         constantLongInfo: {
             highBytes: '高位字节',
             lowBytes: '低位字节',
             description: '值'
         },
+        constantDoubleInfo: {
+            highBytes: '高位字节',
+            lowBytes: '低位字节',
+            description: '值'
+        },
+        constantClassInfo: {
+            index: '类名'
+        },
+        constantStringInfo: {
+            description: '字符串'
+        },
+        constantFieldrefInfo: {
+            classInfo: '类信息',
+            nameAndType: '名字和类型'
+        },
+        constantMethodrefInfo: {
+            classInfo: '类信息',
+            nameAndType: '名字和类型'
+        },
         constantInterfaceMethodrefInfo: {
             classInfo: '类信息',
             nameAndType: '名字和类型'
+        },
+        constantNameAndTypeInfo: {
+            name: '名字',
+            describe: '描述符'
         },
         constantMethodHandleInfo: {
             referenceKind: '引用类型',
             referenceIndex: '引用序号'
         },
-        constantStringInfo: {
-            description: '字符串'
+        constantMethodTypeInfo: {
+            descriptorIndex: '方法描述索引'
+        },
+        constantDynamicInfo: {
+            bootstrapMethodAttrIndex: '引导方法表索引',
+            nameAndTypeIndex: '方法名和描述符'
+        },
+        constantInvokeDynamicInfo: {
+            bootstrapMethodAttrIndex: '引导方法表索引',
+            nameAndTypeIndex: '方法名和描述符'
+        },
+        constantModuleInfo: {
+            nameIndex: '模块名字'
+        },
+        constantPackageInfo: {
+            nameIndex: '包名称'
         },
         empty: '描述'
     },
