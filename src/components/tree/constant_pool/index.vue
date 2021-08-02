@@ -69,8 +69,8 @@
                     this.paddingBottom = 0;
                     return
                 }
-                this.paddingBottom = this.allHeight - 600 - top
-            })
+                this.paddingBottom = this.allHeight - 600 - top;
+            });
         },
         methods: {
             nodeClick(key, item) {
@@ -84,11 +84,6 @@
 
 <style scoped>
     .constant-pool {
-        padding-left: 20px;
+        padding: 0 20px;
     }
-
-    /*.constant-pool {*/
-    /*    height: 600px;*/
-    /*    overflow: auto;*/
-    /*}*/
 </style>
