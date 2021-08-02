@@ -59,4 +59,8 @@
     .bottom-border{
         border-bottom: solid 1px #E4E7ED;
     }
+
+    .select-col {
+        background-color: lightskyblue;
+    }
 </style>

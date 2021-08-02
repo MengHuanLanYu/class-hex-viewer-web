@@ -2,7 +2,7 @@
  * 忽略属性
  * @type {string[]}
  */
-export const IGNORE_ATTRIBUTES = ['_offset', '_size', 'tag', 'expand','titleIndex'];
+export const IGNORE_ATTRIBUTES = ['_offset', '_size', 'tag', 'expand', 'titleIndex'];
 
 export function format(data) {
     return formatJSON({}, data);

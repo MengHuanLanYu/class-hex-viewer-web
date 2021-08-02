@@ -301,10 +301,6 @@
         box-sizing: border-box;
     }
 
-    .select-col {
-        background-color: lightskyblue;
-    }
-
     .hex-col:hover {
         color: white;
         background-color: darkorange;

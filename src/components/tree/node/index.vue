@@ -1,5 +1,5 @@
 <template>
-    <div class="node no-node">
+    <div class="node no-node" :class="{'select-col': isSelected}">
         <div class="icon">
             <template v-if="isShowIcon">
                 <i :class="isExpand ? 'el-icon-folder-opened' : 'el-icon-folder'" @click="$emit('changeExpand')"></i>
@@ -27,6 +27,10 @@
                 type: Boolean,
                 default: false
             },
+            isSelected: {
+                type: Boolean,
+                default: false
+            },
             title: {
                 type: String,
                 default: ''
@@ -46,7 +50,7 @@
         height: 25px;
         line-height: 25px;
         cursor: pointer;
-        background-color: #ffffff;
+        /*background-color: #ffffff;*/
     }
 
     .node > .icon {
