@@ -5,9 +5,7 @@
                        :key="key" @click.native="nodeClick(key,item)"
                        :title="item.titleIndex"
                        :is-selected="item.titleIndex === selectedIndex"
-                       :text="`${item.tag ? item.tag.description : item.description}`">
-                {{item.isChecked}}
-            </node-item>
+                       :text="`${item.tag ? item.tag.description : item.description}`" />
         </template>
     </div>
 </template>
