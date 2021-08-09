@@ -121,5 +121,25 @@ module.exports = {
         descriptorIndex: 'descriptorIndex'
     },
     attributesCount: 'attributes_count',
-    attributes: 'attributes'
+    attributes: 'attributes',
+    attributeInfo: {
+        attributeNameIndex: 'attributeNameIndex',
+        attributeLength: 'attributeLength',
+        code: {
+            codes: 'codes',
+            exceptionTable: {
+                name: 'exceptionTable',
+                startPc: 'startPc',
+                endPc: 'endPc',
+                handlerPc: 'handlerPc',
+                catchType: 'catchType'
+            },
+            otherInfo: {
+                name: 'otherInfo',
+                maxStack: 'maxStack',
+                maxLocals: 'maxLocals',
+                codeLength: 'codeLength'
+            }
+        }
+    }
 };

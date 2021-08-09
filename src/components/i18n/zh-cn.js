@@ -121,5 +121,25 @@ module.exports = {
         descriptorIndex: '描述符'
     },
     attributesCount: '属性表数量',
-    attributes: '属性表集合'
+    attributes: '属性表集合',
+    attributeInfo: {
+        attributeNameIndex: '属性名索引',
+        attributeLength: '属性长度',
+        code: {
+            codes: '字节码',
+            exceptionTable: {
+                name: '异常表',
+                startPc: '起始PC',
+                endPc: '结束PC',
+                handlerPc: '跳转PC',
+                catchType: '捕捉类型'
+            },
+            otherInfo: {
+                name: '其他信息',
+                maxStack: '操作数栈最大深度',
+                maxLocals: '局部变量表最大槽数',
+                codeLength: '字节码长度'
+            }
+        }
+    }
 };

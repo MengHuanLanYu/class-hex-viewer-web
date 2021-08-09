@@ -36,6 +36,9 @@
                     <template v-else-if="type === 'methodList'">
                         <method-info :constant-pool="constantPool" :info="valueInfo"/>
                     </template>
+                    <template v-else-if="type === 'attributeInfoList'">
+                        <attribute-info :constant-pool="constantPool" :type="typeValue" :info="valueInfo"/>
+                    </template>
                 </div>
             </el-card>
         </template>
@@ -47,6 +50,7 @@
     import constantInfo from "./constantInfo";
     import fieldInfo from "./fieldInfo";
     import methodInfo from "./methodInfo";
+    import attributeInfo from "./attributes";
     import hexRow from '../hexrow';
     import {toHump} from "../../../util";
 
@@ -54,7 +58,7 @@
     export default {
         name: "index",
         components: {
-            constantInfo, fieldInfo, methodInfo,hexRow
+            constantInfo, fieldInfo, methodInfo, attributeInfo, hexRow
         },
         props: {
             type: {
@@ -89,6 +93,10 @@
                         break;
                     case 'methodInfos':
                         this.filterInfo(n, 'methodList', item => item.accessFlags, item => item.accessFlags.description);
+                        break;
+                    case 'attributeInfoList':
+                        this.typeValue = n.description;
+                        this.valueInfo = Object.assign({}, n);
                         break;
                     default:
                         this.valueInfo = Object.assign({}, n);
