@@ -108,6 +108,11 @@ module.exports = {
     },
     fieldsCount: '字段数量',
     fieldInfos: '字段集合',
+    fieldInfo: {
+        accessFlags: '访问标识',
+        nameIndex: '名字',
+        descriptorIndex: '描述符'
+    },
     methodCount: '方法数量',
     methodInfos: '方法集合',
     attributesCount: '属性表数量',

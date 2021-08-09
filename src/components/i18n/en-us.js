@@ -108,6 +108,11 @@ module.exports = {
     },
     fieldsCount: 'fields_count',
     fieldInfos: 'fields',
+    fieldInfo: {
+        accessFlags: 'accessFlags',
+        nameIndex: 'nameIndex',
+        descriptorIndex: 'descriptorIndex'
+    },
     methodsCount: 'methods_count',
     methodInfos: 'methods',
     attributesCount: 'attributes_count',

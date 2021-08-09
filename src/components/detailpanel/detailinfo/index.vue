@@ -26,6 +26,9 @@
                     <template v-else-if="type === 'constantInfoList'">
                         <constant-info :constant-pool="constantPool" :type="typeValue" :info="constantValue"/>
                     </template>
+                    <template v-else-if="type === 'interfaceList'">
+                        <hex-row :title="$t('interfaceInfo.title')" :value="`${info.description} ( ${constantPool[info.value - 1].value} )`"/>
+                    </template>
                 </div>
             </el-card>
         </template>
