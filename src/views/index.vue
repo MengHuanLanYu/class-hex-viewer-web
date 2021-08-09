@@ -153,10 +153,10 @@
 
     .viewer-hex {
         overflow: hidden;
-        flex: 4;
+        flex: 5;
     }
 
     .viewer-tools {
-        flex: 2;
+        flex: 3;
     }
 </style>

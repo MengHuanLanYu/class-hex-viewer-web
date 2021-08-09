@@ -115,6 +115,11 @@ module.exports = {
     },
     methodsCount: 'methods_count',
     methodInfos: 'methods',
+    methodInfo: {
+        accessFlags: 'accessFlags',
+        nameIndex: 'nameIndex',
+        descriptorIndex: 'descriptorIndex'
+    },
     attributesCount: 'attributes_count',
     attributes: 'attributes'
 };

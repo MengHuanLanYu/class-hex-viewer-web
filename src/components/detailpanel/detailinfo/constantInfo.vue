@@ -32,27 +32,10 @@
 </template>
 
 <script>
-    import hexRow from '../hexrow';
-
+    import {infoMixin} from "./info";
     export default {
         name: "constantInfo",
-        components: {
-            hexRow
-        },
-        props: {
-            constantPool: {
-                type: Array,
-                default: () => []
-            },
-            type: {
-                type: String,
-                default: undefined
-            },
-            info: {
-                type: Object,
-                default: undefined
-            }
-        }
+        mixins: [infoMixin]
     }
 </script>
 

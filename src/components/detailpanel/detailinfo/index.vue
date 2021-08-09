@@ -15,19 +15,26 @@
                             <hex-row :title="$t(type)" :value="`${info.description}  (${info.value})`"/>
                         </template>
                     </template>
-                    <template v-else-if="type === 'constantPool'">
-                        <template v-if="constantPoolInfoList">
-                            <template v-for="item in constantPoolInfoList">
+                    <template v-else-if="type === 'constantPool' || type === 'fieldInfos' || type === 'methodInfos'">
+                        <template v-if="valueInfoTypeList">
+                            <template v-for="item in valueInfoTypeList">
                                 <hex-row icon="el-icon-pie-chart" :title="item.type" :value="`(${item.size})`"
                                          :key="item.type"/>
                             </template>
                         </template>
                     </template>
                     <template v-else-if="type === 'constantInfoList'">
-                        <constant-info :constant-pool="constantPool" :type="typeValue" :info="constantValue"/>
+                        <constant-info :constant-pool="constantPool" :type="typeValue" :info="valueInfo"/>
                     </template>
                     <template v-else-if="type === 'interfaceList'">
-                        <hex-row :title="$t('interfaceInfo.title')" :value="`${info.description} ( ${constantPool[info.value - 1].value} )`"/>
+                        <hex-row :title="$t('interfaceInfo.title')"
+                                 :value="`${info.description} ( ${constantPool[info.value - 1].value} )`"/>
+                    </template>
+                    <template v-else-if="type === 'fieldList'">
+                        <field-info :constant-pool="constantPool" :info="valueInfo"/>
+                    </template>
+                    <template v-else-if="type === 'methodList'">
+                        <method-info :constant-pool="constantPool" :info="valueInfo"/>
                     </template>
                 </div>
             </el-card>
@@ -38,6 +45,8 @@
 <script>
     import {getConstantPool, IGNORE_ATTRIBUTES} from "../../../util/json";
     import constantInfo from "./constantInfo";
+    import fieldInfo from "./fieldInfo";
+    import methodInfo from "./methodInfo";
     import hexRow from '../hexrow';
     import {toHump} from "../../../util";
 
@@ -45,7 +54,7 @@
     export default {
         name: "index",
         components: {
-            constantInfo, hexRow
+            constantInfo, fieldInfo, methodInfo,hexRow
         },
         props: {
             type: {
@@ -62,46 +71,73 @@
                 defaultNameList,
                 constantPool: [],
                 typeValue: '',
-                constantValue: {},
-                constantPoolInfoList: []
+                valueInfo: {},
+                valueInfoTypeList: []
             }
         },
         watch: {
             info(n) {
-                if (this.type === 'constantPool') {
-                    let list = [];
-                    n.constantInfoList.filter(item => item.tag).map(item => item.tag.description).forEach(item => {
-                        let index = list.findIndex(s => s.type === item);
-                        if (index === -1) {
-                            list.push({type: item, size: 1});
-                        } else {
-                            list[index].size++;
-                        }
-                    });
-                    this.constantPoolInfoList = [...list];
-                } else {
-                    // 要整理成这种形式
-                    // {
-                    //   特有属性: 值
-                    //   .....
-                    // }
-                    if (n.tag) {
-                        this.typeValue = toHump(n.tag.description);
-                        let info = {};
-                        Object.keys(n).filter(item => IGNORE_ATTRIBUTES.indexOf(item) === -1).forEach(item => {
-                            info[item] = n[item];
-                        });
-                        this.constantValue = Object.assign({}, info);
-                        console.log(this.constantValue);
-                    } else {
-                        this.typeValue = 'empty';
-                        this.constantValue = {description: n.description};
-                    }
+                switch (this.type) {
+                    case 'constantPool':
+                        this.filterInfo(n, 'constantInfoList', item => item.tag, item => item.tag.description);
+                        break;
+                    case 'constantInfoList':
+                        this.constantInfoListInfo(n);
+                        break;
+                    case 'fieldInfos':
+                        this.filterInfo(n, 'fieldList', item => item.accessFlags, item => item.accessFlags.description);
+                        break;
+                    case 'methodInfos':
+                        this.filterInfo(n, 'methodList', item => item.accessFlags, item => item.accessFlags.description);
+                        break;
+                    default:
+                        this.valueInfo = Object.assign({}, n);
+                        break;
                 }
             }
         },
         created() {
             this.constantPool = getConstantPool(this.$store.state.classInfo);
+        },
+        methods: {
+            /**
+             * 过滤信息
+             * @param arr
+             * @param type
+             * @param filterFun
+             * @param mapFun
+             */
+            filterInfo(arr, type, filterFun, mapFun) {
+                let list = [];
+                arr[type].filter(filterFun).map(mapFun).forEach(item => {
+                    let index = list.findIndex(s => s.type === item);
+                    if (index === -1) {
+                        list.push({type: item, size: 1});
+                    } else {
+                        list[index].size++;
+                    }
+                    this.valueInfoTypeList = [...list];
+                })
+            },
+            constantInfoListInfo(n) {
+                console.log(JSON.stringify(n));
+                // 要整理成这种形式
+                // {
+                //   特有属性: 值
+                //   .....
+                // }
+                if (n.tag) {
+                    this.typeValue = toHump(n.tag.description);
+                    let info = {};
+                    Object.keys(n).filter(item => IGNORE_ATTRIBUTES.indexOf(item) === -1).forEach(item => {
+                        info[item] = n[item];
+                    });
+                    this.valueInfo = Object.assign({}, info);
+                } else {
+                    this.typeValue = 'empty';
+                    this.valueInfo = {description: n.description};
+                }
+            }
         }
     }
 </script>

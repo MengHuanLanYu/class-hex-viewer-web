@@ -115,6 +115,11 @@ module.exports = {
     },
     methodCount: '方法数量',
     methodInfos: '方法集合',
+    methodInfo: {
+        accessFlags: '访问标识',
+        nameIndex: '名字',
+        descriptorIndex: '描述符'
+    },
     attributesCount: '属性表数量',
     attributes: '属性表集合'
 };
