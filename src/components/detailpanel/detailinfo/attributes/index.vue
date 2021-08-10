@@ -11,7 +11,7 @@
 
 <script>
     import {infoMixin} from "../info";
-    import codeAttr from "./code";
+    import codeAttr from "./codeAttr";
     export default {
         name: "index",
         components: {
