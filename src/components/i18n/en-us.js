@@ -140,6 +140,10 @@ module.exports = {
                 maxLocals: 'maxLocals',
                 codeLength: 'codeLength'
             }
+        },
+        lineNumberTable: {
+            startPc: 'startPc',
+            lineNumber: 'lineNumber'
         }
     }
 };

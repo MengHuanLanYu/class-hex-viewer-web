@@ -140,6 +140,10 @@ module.exports = {
                 maxLocals: '局部变量表最大槽数',
                 codeLength: '字节码长度'
             }
+        },
+        lineNumberTable: {
+            startPc: '起始PC',
+            lineNumber: '行号'
         }
     }
 };

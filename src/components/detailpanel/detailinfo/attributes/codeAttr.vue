@@ -45,9 +45,9 @@
                 </el-tab-pane>
             </template>
             <el-tab-pane :label="$t('attributeInfo.code.otherInfo.name')">
-                <hex-row :title="$t('attributeInfo.code.otherInfo.maxStack')" :value="info.maxStack.value" />
-                <hex-row :title="$t('attributeInfo.code.otherInfo.maxLocals')" :value="info.maxLocals.value" />
-                <hex-row :title="$t('attributeInfo.code.otherInfo.codeLength')" :value="info.codeLength.value" />
+                <hex-row :title="$t('attributeInfo.code.otherInfo.maxStack')" :value="info.maxStack.description" />
+                <hex-row :title="$t('attributeInfo.code.otherInfo.maxLocals')" :value="info.maxLocals.description" />
+                <hex-row :title="$t('attributeInfo.code.otherInfo.codeLength')" :value="info.codeLength.description" />
             </el-tab-pane>
         </el-tabs>
     </div>

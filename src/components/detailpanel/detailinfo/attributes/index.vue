@@ -6,16 +6,21 @@
         <template v-if="type === 'Code'">
             <code-attr :constant-pool="constantPool" :info="info" />
         </template>
+        <template v-else-if="type === 'LineNumberTable'">
+            <line-number-table-attr :info="info" />
+        </template>
     </div>
 </template>
 
 <script>
     import {infoMixin} from "../info";
     import codeAttr from "./codeAttr";
+    import lineNumberTableAttr from "./lineNumberTableAttr";
     export default {
         name: "index",
         components: {
-            codeAttr
+            codeAttr,
+            lineNumberTableAttr
         },
         mixins: [infoMixin],
     }

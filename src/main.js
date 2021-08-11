@@ -9,7 +9,9 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.config.productionTip = false;
 // 用于vue总线事件
 Vue.prototype.$eventBus = new Vue();
-Vue.use(ElementUI);
+Vue.use(ElementUI,{
+    size: 'mini'
+});
 
 new Vue({
     i18n,
